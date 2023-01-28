@@ -3,6 +3,7 @@ import { renderWidget, SelectionType, usePlugin, useTracker } from '@remnote/plu
 
 import { useDebounce } from '../hooks';
 import { cleanSelectedText } from '../utils';
+import { getTermDefinitionData } from '../services/dictionary-api';
 
 export const SelectedTextDictionary = () => {
   const plugin = usePlugin();
@@ -28,9 +29,8 @@ export const SelectedTextDictionary = () => {
       }
 
       try {
-        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`);
-        const data = await response.json();
-        setWordData(Array.isArray(data) ? data[0] : undefined);
+        const data = await getTermDefinitionData(searchTerm);
+        setWordData(data);
       } catch (e) {
         console.error(e);
       }
