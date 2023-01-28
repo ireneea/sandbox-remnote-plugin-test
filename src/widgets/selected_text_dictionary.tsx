@@ -1,20 +1,44 @@
+import { useState, useEffect } from 'react';
 import { renderWidget, SelectionType, usePlugin, useTracker } from '@remnote/plugin-sdk';
 
-export const SelectedTextDictionary = () => {
+import { useDebounce } from '../hooks';
+import { cleanSelectedText } from '../utils';
 
+export const SelectedTextDictionary = () => {
   const plugin = usePlugin();
 
-  const selectedText = useTracker(async (reactActivePlugin) => {
+  const [wordData, setWordData] = useState<string>();
+
+  const searchTerm = useDebounce(useTracker(async (reactActivePlugin) => {
     const sel = await reactActivePlugin.editor.getSelection();
     if (sel?.type == SelectionType.Text) {
       return await plugin.richText.toString(sel.richText);
     } else {
-      return "";
+      return '';
     }
-  });
+  }), 500);
+
+  useEffect(() => {
+
+    const getAndSetData = async () => {
+      if (!searchTerm) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`);
+        const data = await response.json();
+        setWordData(Array.isArray(data) ? data[0] : undefined);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    getAndSetData();
+  }, [searchTerm]);
 
 
-  return <div>{selectedText}</div>
-}
+  return <div>{JSON.stringify(wordData, null, 4)}</div>;
+};
 
-renderWidget(SelectedTextDictionary)
+renderWidget(SelectedTextDictionary);
