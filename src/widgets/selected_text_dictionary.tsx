@@ -12,7 +12,9 @@ export const SelectedTextDictionary = () => {
   const searchTerm = useDebounce(useTracker(async (reactActivePlugin) => {
     const sel = await reactActivePlugin.editor.getSelection();
     if (sel?.type == SelectionType.Text) {
-      return await plugin.richText.toString(sel.richText);
+
+      const text = await plugin.richText.toString(sel.richText);
+      return cleanSelectedText(text);
     } else {
       return '';
     }
