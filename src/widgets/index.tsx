@@ -16,13 +16,8 @@ async function onActivate(plugin: ReactRNPlugin) {
       widgetTabTitle: 'Dictionary',
     },
   );
-
-
-  plugin.app.toast('Toast yeah!');
-
 }
 
-async function onDeactivate(_: ReactRNPlugin) {
-}
+async function onDeactivate(_: ReactRNPlugin) {}
 
 declareIndexPlugin(onActivate, onDeactivate);
