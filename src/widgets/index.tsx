@@ -1,13 +1,28 @@
-import { declareIndexPlugin, ReactRNPlugin } from '@remnote/plugin-sdk';
+import { declareIndexPlugin, ReactRNPlugin, WidgetLocation } from '@remnote/plugin-sdk';
 import '../style.css';
 import '../App.css';
 
 async function onActivate(plugin: ReactRNPlugin) {
 
-  plugin.app.toast("Toast yeah!");
+  await plugin.app.registerWidget(
+    'selected_text_dictionary',
+    WidgetLocation.SelectedTextMenu,
+    {
+      dimensions: {
+        height: 'auto',
+        width: '100%',
+      },
+      widgetTabIcon: 'https://cdn-icons-png.flaticon.com/512/2069/2069571.png',
+      widgetTabTitle: 'Dictionary',
+    },
+  );
+
+
+  plugin.app.toast('Toast yeah!');
 
 }
 
-async function onDeactivate(_: ReactRNPlugin) {}
+async function onDeactivate(_: ReactRNPlugin) {
+}
 
 declareIndexPlugin(onActivate, onDeactivate);
