@@ -1,9 +1,9 @@
 {
   "manifestVersion": 1,
-  "id": "plugin_template",
-  "name": "Plugin Template",
-  "author": "remnote",
-  "repoUrl": "",
+  "id": "ireneea-test",
+  "name": "Test",
+  "author": "ireneea",
+  "repoUrl": "https://github.com/ireneea/sandbox-remnote-plugin-test",
   "version": {
     "major": 0,
     "minor": 0,
@@ -16,7 +16,7 @@
   "requiredScopes": [
     {
       "type": "All",
-      "level": "Read"
+      "level": "ReadCreateModifyDelete"
     }
   ]
 }
