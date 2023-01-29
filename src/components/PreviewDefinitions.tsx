@@ -1,5 +1,5 @@
 import React from 'react';
-import { DefinitionData, Meaning, Phonetic } from '../services/dictionary-api';
+import { DefinitionData, Meaning } from '../services/dictionary-api';
 import { PartOfSpeechMeanings } from './PartOfSpeechMeanings';
 import { WordDefinitionTitle } from './WordDefinitionTitle';
 import { groupBy } from '../utils';
@@ -8,7 +8,6 @@ export interface WordDefinition {
   word: string;
   partOfSpeech: string;
   meanings: Meaning[];
-  phonetic?: Phonetic;
 }
 
 export interface PreviewDefinitionsProps {
@@ -38,7 +37,6 @@ export const PreviewDefinitions: React.FC<PreviewDefinitionsProps> = ({ wordData
                     word,
                     partOfSpeech,
                     meanings: partOfSpeechMeanings,
-                    phonetic
                 }) : undefined
             }
 

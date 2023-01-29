@@ -41,13 +41,53 @@ export const SelectedTextDictionary = () => {
   }, [searchTerm]);
 
   const addSelectedDefinition = async (wordDefinition: WordDefinition) => {
-    const { word, partOfSpeech, meanings, phonetic } = wordDefinition;
-    console.log({
-      word,
-      phonetic,
-      meanings,
-      partOfSpeech,
-    });
+    try {
+      const { word, partOfSpeech, meanings } = wordDefinition;
+
+      const rootRemName = await plugin.settings.getSetting('root') as string;
+      if (!rootRemName) {
+        await plugin.app.toast('Please set a root rem for the dictionary');
+        return;
+      }
+
+      const rootRem = await plugin.rem.findByName([rootRemName], null);
+      if (!rootRem) {
+        await plugin.app.toast(`Root rem named '${rootRemName}' not found `);
+        return;
+      }
+
+      const wordRem = await plugin.rem.createRem();
+      if (wordRem) {
+        const wordRemText = `${word} (${partOfSpeech})`;
+        const existingWordRem = await plugin.rem.findByName([wordRemText], rootRem._id);
+
+        if (existingWordRem) {
+          plugin.app.toast(`Word '${wordRemText}' already exists in the dictionary`);
+          return;
+        }
+
+
+        await wordRem.setText([wordRemText]);
+        await wordRem.setParent(rootRem._id);
+
+        const definitionRems = meanings
+          .map((meaning) => meaning.definitions.map((def) => def.definition))
+          .flat();
+
+        for (const definition of definitionRems) {
+          const definitionRem = await plugin.rem.createRem();
+          if (definitionRem) {
+            await definitionRem.setText([definition]);
+            await definitionRem.setParent(wordRem._id);
+            await definitionRem.setIsCardItem(true);
+          }
+        }
+
+        plugin.app.toast(`Added '${wordRemText}' to dictionary`);
+      }
+    } catch (e) {
+      plugin.app.toast('Error adding word to dictionary');
+    }
   }
 
 

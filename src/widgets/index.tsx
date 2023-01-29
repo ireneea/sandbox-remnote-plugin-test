@@ -3,6 +3,12 @@ import '../style.css';
 
 async function onActivate(plugin: ReactRNPlugin) {
 
+  await plugin.settings.registerStringSetting({
+    id: 'root',
+    title: 'Dictionary Root Rem',
+    defaultValue: '',
+  });
+
   await plugin.app.registerWidget(
     'selected_text_dictionary',
     WidgetLocation.SelectedTextMenu,
