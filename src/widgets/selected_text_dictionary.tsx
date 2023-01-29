@@ -4,7 +4,7 @@ import { renderWidget, SelectionType, usePlugin, useTracker } from '@remnote/plu
 import { useDebounce } from '../hooks';
 import { cleanSelectedText } from '../utils';
 import { DefinitionData, getTermDefinitionData } from '../services/dictionary-api';
-import { PreviewDefinitions } from '../components/PreviewDefinitions';
+import { PreviewDefinitions, WordDefinition } from '../components/PreviewDefinitions';
 
 export const SelectedTextDictionary = () => {
   const plugin = usePlugin();
@@ -40,10 +40,20 @@ export const SelectedTextDictionary = () => {
     getAndSetData();
   }, [searchTerm]);
 
+  const addSelectedDefinition = async (wordDefinition: WordDefinition) => {
+    const { word, partOfSpeech, meanings, phonetic } = wordDefinition;
+    console.log({
+      word,
+      phonetic,
+      meanings,
+      partOfSpeech,
+    });
+  }
+
 
   return (
     <div className="min-h-[200px] max-h-[500px] overflow-y-scroll m-4">
-      { wordData && <PreviewDefinitions wordData={wordData} /> }
+      { wordData && <PreviewDefinitions wordData={wordData} onSelectDefinition={addSelectedDefinition}/> }
     </div>
   );
 };
