@@ -3,12 +3,12 @@ import { renderWidget, SelectionType, usePlugin, useTracker } from '@remnote/plu
 
 import { useDebounce } from '../hooks';
 import { cleanSelectedText } from '../utils';
-import { getTermDefinitionData } from '../services/dictionary-api';
+import { DefinitionData, getTermDefinitionData } from '../services/dictionary-api';
 
 export const SelectedTextDictionary = () => {
   const plugin = usePlugin();
 
-  const [wordData, setWordData] = useState<string>();
+  const [wordData, setWordData] = useState<DefinitionData>();
 
   const searchTerm = useDebounce(useTracker(async (reactActivePlugin) => {
     const sel = await reactActivePlugin.editor.getSelection();
