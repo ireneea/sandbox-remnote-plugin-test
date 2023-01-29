@@ -4,6 +4,7 @@ import { renderWidget, SelectionType, usePlugin, useTracker } from '@remnote/plu
 import { useDebounce } from '../hooks';
 import { cleanSelectedText } from '../utils';
 import { DefinitionData, getTermDefinitionData } from '../services/dictionary-api';
+import { PreviewDefinitions } from '../components/PreviewDefinitions';
 
 export const SelectedTextDictionary = () => {
   const plugin = usePlugin();
@@ -34,13 +35,17 @@ export const SelectedTextDictionary = () => {
       } catch (e) {
         console.error(e);
       }
-    }
+    };
 
     getAndSetData();
   }, [searchTerm]);
 
 
-  return <div>{JSON.stringify(wordData, null, 4)}</div>;
+  return (
+    <div>
+      { wordData && <PreviewDefinitions wordData={wordData} /> }
+    </div>
+  );
 };
 
 renderWidget(SelectedTextDictionary);
