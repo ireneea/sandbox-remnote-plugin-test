@@ -42,7 +42,7 @@ export const SelectedTextDictionary = () => {
 
 
   return (
-    <div>
+    <div className="min-h-[200px] max-h-[500px] overflow-y-scroll m-4">
       { wordData && <PreviewDefinitions wordData={wordData} /> }
     </div>
   );
